@@ -7,8 +7,13 @@
 //
 
 #import "ViewController.h"
+#import "GDriveDownload.h"
 
 @interface ViewController ()
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (nonatomic, strong) GDriveDownload* download;
 
 @end
 
@@ -16,7 +21,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.download = [[GDriveDownload alloc] initWithDownloadID:@"0BwpVZ-NgHEeRM2R4SGpyQnVJMG8"];
+    [self.download startDownload];
 }
 
 - (void)didReceiveMemoryWarning {
