@@ -10,9 +10,13 @@
 #import "GDriveDownload.h"
 
 @interface ViewController ()
+{
+    int idxDownloading;
+}
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (nonatomic, strong) NSMutableArray* fileList;
 @property (nonatomic, strong) GDriveDownload* download;
 
 @end
@@ -21,7 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.fileList = nil;
     self.download = [[GDriveDownload alloc] initWithDownloadID:@"0BwpVZ-NgHEeRM2R4SGpyQnVJMG8" delegate:self];
     [self.download startDownload];
 }
@@ -33,7 +37,12 @@
 
 - (void)downloadSuccess:(NSURL*)location
 {
-    NSLog(@"download success to %@", location);
+    if (self.fileList == nil)
+    {
+        NSString* links = [NSString stringWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
+        self.fileList = [[links componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]] mutableCopy];
+        idxDownloading = 0;
+    }
 }
 
 - (void)downloadError:(GDriveDownload*)download
