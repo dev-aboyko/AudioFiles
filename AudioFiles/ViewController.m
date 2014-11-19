@@ -111,12 +111,20 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"FileIDCell"];
+    UITableViewCell* cell;
     id obj = [self.fileList objectAtIndex:indexPath.row];
     if ([obj isKindOfClass:[NSString class]])
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"FileIDCell"];
         cell.textLabel.text = obj;
-    else
-        cell.textLabel.text = @"audio file";
+    }
+    else if ([obj isKindOfClass:[AudioFile class]])
+    {
+        AudioFile* audioFile = obj;
+        cell = [tableView dequeueReusableCellWithIdentifier:@"AudioFileCell"];
+        cell.textLabel.text = audioFile.title;
+        cell.detailTextLabel.text = audioFile.artist;
+    }
     return cell;
 }
 
