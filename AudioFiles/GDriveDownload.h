@@ -8,9 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+@class GDriveDownload;
+
+@protocol GDriveDownloadDelegate
+
+- (void)downloadSuccess:(NSURL*)location;
+- (void)downloadError:(GDriveDownload*)download;
+
+@end
+
 @interface GDriveDownload : NSObject <NSURLSessionDelegate>
 
-- (id)initWithDownloadID:(NSString*)downloadID;
+- (id)initWithDownloadID:(NSString*)downloadID delegate:(id<GDriveDownloadDelegate>)delegate;
 - (void)startDownload;
 
 @end

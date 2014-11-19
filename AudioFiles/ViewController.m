@@ -22,13 +22,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.download = [[GDriveDownload alloc] initWithDownloadID:@"0BwpVZ-NgHEeRM2R4SGpyQnVJMG8"];
+    self.download = [[GDriveDownload alloc] initWithDownloadID:@"0BwpVZ-NgHEeRM2R4SGpyQnVJMG8" delegate:self];
     [self.download startDownload];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)downloadSuccess:(NSURL*)location
+{
+    NSLog(@"download success to %@", location);
+}
+
+- (void)downloadError:(GDriveDownload*)download
+{
+    NSLog(@"download error");
 }
 
 @end

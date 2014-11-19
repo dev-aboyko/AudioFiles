@@ -7,10 +7,12 @@
 //
 
 #import "GDriveDownload.h"
+#import "ViewController.h"
 
 @interface GDriveDownload ()
 
 @property (nonatomic, strong) NSString* downloadID;
+@property (nonatomic, weak) id<GDriveDownloadDelegate> delegate;
 @property (nonatomic, strong) NSURL* docDirectoryURL;
 @property (nonatomic, strong) NSURLSession* session;
 @property (nonatomic, strong) NSURLSessionDownloadTask* downloadTask;
@@ -19,11 +21,12 @@
 
 @implementation GDriveDownload
 
-- (id)initWithDownloadID:(NSString*)downloadID{
+- (id)initWithDownloadID:(NSString*)downloadID delegate:(id<GDriveDownloadDelegate>)delegate{
     self = [super init];
     if (self != nil)
     {
         self.downloadID = downloadID;
+        self.delegate = delegate;
         NSArray *URLs = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
         self.docDirectoryURL = [URLs objectAtIndex:0];
     }
@@ -53,7 +56,9 @@
                                         toURL:destinationURL
                                         error:&error];
     if (success)
-        NSLog(@"successfully downloaded file to %@", destinationURL);
+        [self.delegate downloadSuccess:destinationURL];
+    else
+        [self.delegate downloadError:self];
 }
 
 @end
