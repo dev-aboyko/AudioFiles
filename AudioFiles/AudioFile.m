@@ -8,19 +8,15 @@
 
 #import "AudioFile.h"
 
-@interface AudioFile ()
-
-@property NSURL* location;
-
-@end
-
 @implementation AudioFile
 
 - (id)initWithName:(NSString *)name Location:(NSURL *)location
 {
     self = [super init];
     if (self != nil)
-    {}
+    {
+        self.location = location;
+    }
     return self;
 }
 

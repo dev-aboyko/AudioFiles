@@ -10,6 +10,8 @@
 
 @interface AudioFile : NSObject
 
+@property NSURL* location;
+
 - (id)initWithName:(NSString*)name Location:(NSURL*)location;
 
 @end

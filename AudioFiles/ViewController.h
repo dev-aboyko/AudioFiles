@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GDriveDownload.h"
 
-@interface ViewController : UIViewController <GDriveDownloadDelegate>
+@interface ViewController : UIViewController <GDriveDownloadDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end
 
