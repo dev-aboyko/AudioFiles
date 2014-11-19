@@ -8,16 +8,15 @@
 
 #import "ViewController.h"
 #import "GDriveDownload.h"
+#import "AudioFile.h"
 
 @interface ViewController ()
-{
-    int idxDownloading;
-}
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray* fileList;
 @property (nonatomic, strong) GDriveDownload* download;
+@property (nonatomic) NSUInteger idxDownloading;
 
 @end
 
@@ -41,7 +40,19 @@
     {
         NSString* links = [NSString stringWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
         self.fileList = [[links componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]] mutableCopy];
-        idxDownloading = 0;
+        self.idxDownloading = 0;
+    }
+    else
+    {
+        NSString* fileName = [self.fileList objectAtIndex:self.idxDownloading];
+        [self.fileList replaceObjectAtIndex:self.idxDownloading withObject:[[AudioFile alloc]initWithName:fileName Location:location]];
+        ++self.idxDownloading;
+    }
+    if (self.idxDownloading < self.fileList.count)
+    {
+        NSString* fileName = [self.fileList objectAtIndex:self.idxDownloading];
+        self.download = [[GDriveDownload alloc] initWithDownloadID:fileName delegate:self];
+        [self.download startDownload];
     }
 }
 

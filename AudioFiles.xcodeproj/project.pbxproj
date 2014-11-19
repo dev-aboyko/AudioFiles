@@ -15,6 +15,7 @@
 		772C8F8E1A1B8C9200162C47 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 772C8F8C1A1B8C9200162C47 /* LaunchScreen.xib */; };
 		772C8F9A1A1B8C9200162C47 /* AudioFilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 772C8F991A1B8C9200162C47 /* AudioFilesTests.m */; };
 		774BFC3C1A1C095C00369D4C /* GDriveDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 774BFC3B1A1C095C00369D4C /* GDriveDownload.m */; };
+		774BFC3F1A1C245B00369D4C /* AudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 774BFC3E1A1C245B00369D4C /* AudioFile.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,8 @@
 		772C8F991A1B8C9200162C47 /* AudioFilesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioFilesTests.m; sourceTree = "<group>"; };
 		774BFC3A1A1C095C00369D4C /* GDriveDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDriveDownload.h; sourceTree = "<group>"; };
 		774BFC3B1A1C095C00369D4C /* GDriveDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDriveDownload.m; sourceTree = "<group>"; };
+		774BFC3D1A1C245B00369D4C /* AudioFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFile.h; sourceTree = "<group>"; };
+		774BFC3E1A1C245B00369D4C /* AudioFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioFile.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +87,8 @@
 		772C8F7C1A1B8C9200162C47 /* AudioFiles */ = {
 			isa = PBXGroup;
 			children = (
+				774BFC3D1A1C245B00369D4C /* AudioFile.h */,
+				774BFC3E1A1C245B00369D4C /* AudioFile.m */,
 				772C8F811A1B8C9200162C47 /* AppDelegate.h */,
 				772C8F821A1B8C9200162C47 /* AppDelegate.m */,
 				774BFC3A1A1C095C00369D4C /* GDriveDownload.h */,
@@ -228,6 +233,7 @@
 				774BFC3C1A1C095C00369D4C /* GDriveDownload.m in Sources */,
 				772C8F831A1B8C9200162C47 /* AppDelegate.m in Sources */,
 				772C8F801A1B8C9200162C47 /* main.m in Sources */,
+				774BFC3F1A1C245B00369D4C /* AudioFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
