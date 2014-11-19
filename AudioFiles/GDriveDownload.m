@@ -34,8 +34,11 @@
 }
 
 - (void)startDownload{
-    if ([self fileExists])
-        return;
+    if (![self fileExists])
+        [self forceDownload];
+}
+        
+- (void)forceDownload{
     NSString* string = [NSString stringWithFormat:@"https://drive.google.com/uc?export=download&confirm=no_antivirus&id=%@", self.downloadID];
     NSURL* URL = [NSURL URLWithString:string];
     NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -63,8 +66,7 @@
         [self.delegate downloadError:self];
 }
 
-- (BOOL)fileExists
-{
+- (BOOL)fileExists{
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSURL *destinationURL = [self.docDirectoryURL URLByAppendingPathComponent:self.downloadID];
     [self.delegate downloadSuccess:destinationURL];

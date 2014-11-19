@@ -21,5 +21,6 @@
 
 - (id)initWithDownloadID:(NSString*)downloadID delegate:(id<GDriveDownloadDelegate>)delegate;
 - (void)startDownload;
+- (void)forceDownload;
 
 @end

@@ -34,7 +34,7 @@
     self.nowPlaying = nil;
     NSLog(@"downloading file list");
     self.download = [[GDriveDownload alloc] initWithDownloadID:@"0BwpVZ-NgHEeRV1AwcUd0RTB0M0E" delegate:self];
-    [self.download startDownload];
+    [self.download forceDownload];
 }
 
 - (void)didReceiveMemoryWarning {
