@@ -48,25 +48,14 @@
 - (void)downloadSuccess:(NSURL*)location
 {
     if (self.fileList == nil)
-    {
-        NSString* links = [NSString stringWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
-        self.fileList = [[links componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]] mutableCopy];
-        [self.fileList removeObject:@""];
-        self.idxDownloading = 0;
-    }
+        [self readFileListFromLocation:location];
     else
     {
-        AudioFile* audioFile = [[AudioFile alloc]initWithLocation:location];
-        [self.fileList replaceObjectAtIndex:self.idxDownloading withObject:audioFile];
+        [self addAudioFileAtLocation:location];
+        [self updateTracksTXT];
         ++self.idxDownloading;
     }
-    if (self.idxDownloading < self.fileList.count)
-    {
-        NSString* link = [self.fileList objectAtIndex:self.idxDownloading];
-        NSLog(@"downloading %@", link);
-        self.download = [[GDriveDownload alloc] initWithLink:link delegate:self];
-        [self.download startDownload];
-    }
+    [self downloadNextFile];
     [self performSelectorOnMainThread:@selector(reloadTable) withObject:nil waitUntilDone:NO];
 }
 
@@ -78,6 +67,98 @@
 - (void)downloadError:(GDriveDownload*)download
 {
     NSLog(@"download error");
+    if (self.fileList == nil)
+    {
+        NSLog(@"using local tracks.txt");
+        [self readFileListFromLocation:[self locationTracksTXT]];
+        [self addLocalFiles];
+        [self performSelectorOnMainThread:@selector(reloadTable) withObject:nil waitUntilDone:NO];
+        [self downloadNextFile];
+    }
+}
+
+- (void)readFileListFromLocation:(NSURL*)location
+{
+    NSString* links = [NSString stringWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
+    self.fileList = [[links componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]] mutableCopy];
+    [self.fileList removeObject:@""];
+    self.idxDownloading = 0;
+}
+
+- (void)addAudioFileAtLocation:(NSURL*)location
+{
+    AudioFile* audioFile = [[AudioFile alloc]initWithLocation:location];
+    [self.fileList replaceObjectAtIndex:self.idxDownloading withObject:audioFile];
+}
+
+- (void)downloadNextFile
+{
+    if (self.idxDownloading < self.fileList.count)
+    {
+        id obj = [self.fileList objectAtIndex:self.idxDownloading];
+        if ([obj isKindOfClass:[NSString class]])
+        {
+            NSString* link = obj;
+            if ([link hasPrefix:@"http"])
+            {
+                self.download = [[GDriveDownload alloc] initWithLink:link delegate:self];
+                [self.download startDownload];
+            }
+        }
+    }
+}
+
+- (void)addLocalFiles
+{
+    NSArray* URLs = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSURL* docDirectoryURL = [URLs objectAtIndex:0];
+    NSLog(@"documents at %@", docDirectoryURL);
+    for(self.idxDownloading = 0; self.idxDownloading != self.fileList.count; ++self.idxDownloading)
+    {
+        id obj = self.fileList[self.idxDownloading];
+        if ([obj isKindOfClass:[NSString class]])
+        {
+            NSString* link = obj;
+            if ([link hasPrefix:@"file://"])
+            {
+                NSLog(@"using local %@", link);
+                NSURL* location = [docDirectoryURL URLByAppendingPathComponent:[link lastPathComponent]];
+                NSLog(@"%@", location);
+                [self addAudioFileAtLocation:location];
+            }
+        }
+    }
+}
+
+- (NSURL*)locationTracksTXT
+{
+    NSArray* URLs = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSURL* docDirectoryURL = [URLs objectAtIndex:0];
+    NSURL* tracksTXT = [docDirectoryURL URLByAppendingPathComponent:@"tracks.txt"];
+    return tracksTXT;
+}
+
+- (void)updateTracksTXT
+{
+    NSMutableString* list = [NSMutableString stringWithString:@""];
+    for (id obj in self.fileList)
+    {
+        if ([obj isKindOfClass:[NSString class]])
+        {
+            NSString* link = obj;
+            [list appendString:link];
+            [list appendString:@"\n"];
+        }
+        else if ([obj isKindOfClass:[AudioFile class]])
+        {
+            AudioFile* audioFile = (AudioFile*)obj;
+            [list appendString:@"file://"];
+            [list appendString:[audioFile.location lastPathComponent]];
+            [list appendString:@"\n"];
+        }
+    }
+    NSLog(@"%@", list);
+    [list writeToURL:[self locationTracksTXT] atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
 #pragma mark - Play
