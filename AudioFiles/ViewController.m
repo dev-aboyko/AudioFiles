@@ -78,6 +78,8 @@
 
 - (void)downloadError:(GDriveDownload*)download
 {
+    if (![self.download isEqual:download])
+        return;
     NSLog(@"download error");
     if (self.fileList == nil)
     {
@@ -85,6 +87,7 @@
         [self readFileListFromLocation:[self locationTracksTXT]];
         [self addLocalFiles];
         [self performSelectorOnMainThread:@selector(reloadTable) withObject:nil waitUntilDone:NO];
+        self.idxDownloading = 0;
         [self downloadNextFile];
     }
 }
@@ -105,9 +108,11 @@
 
 - (void)downloadNextFile
 {
-    if (self.idxDownloading < self.fileList.count)
+    NSLog(@"downloading next file");
+    while (self.idxDownloading < self.fileList.count)
     {
         id obj = [self.fileList objectAtIndex:self.idxDownloading];
+        NSLog(@"%@", obj);
         if ([obj isKindOfClass:[NSString class]])
         {
             NSString* link = obj;
@@ -116,6 +121,11 @@
                 self.download = [[GDriveDownload alloc] initWithLink:link delegate:self];
                 [self.download startDownload];
             }
+            break;
+        }
+        else
+        {
+            ++self.idxDownloading;
         }
     }
 }
