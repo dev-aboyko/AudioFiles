@@ -74,14 +74,21 @@
       downloadTask:(NSURLSessionDownloadTask *)downloadTask
     didFinishDownloadingToURL:(NSURL *)location
 {
-    NSError *error;
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)downloadTask.response;
+    if(httpResponse.statusCode != 200)
+    {
+        NSLog(@"%@", downloadTask.response);
+        [self.delegate downloadError:self];
+        return;
+    }
+
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    
     NSURL *destinationURL = [self.docDirectoryURL URLByAppendingPathComponent:[[downloadTask response] suggestedFilename]];
     
     if ([fileManager fileExistsAtPath:[destinationURL path]])
         [fileManager removeItemAtURL:destinationURL error:nil];
     
+    NSError *error;
     BOOL success = [fileManager copyItemAtURL:location
                                         toURL:destinationURL
                                         error:&error];

@@ -33,7 +33,7 @@
     self.player = nil;
     self.nowPlaying = nil;
     NSLog(@"downloading file list");
-    NSString* link = @"https://drive.google.com/uc?export=download&confirm=no_antivirus&id=0BwpVZ-NgHEeRV1AwcUd0RTB0M0E";
+    NSString* link = @"https://drive.google.com/uc?export=download&confirm=no_antivirus&id=0BwpVZ-NgHEeRVW9VVnFPTGZ0cXM";
     self.download = [[GDriveDownload alloc] initWithLink:link delegate:self];
     [self.download forceDownload];
 }
