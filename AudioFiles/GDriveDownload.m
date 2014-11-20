@@ -60,6 +60,7 @@
     if (self.checkFileExists)
     {
         NSString* fileName = [[downloadTask response] suggestedFilename];
+        NSLog(@"file name %@", fileName);
         if ([self fileExists:fileName])
         {
             NSLog(@"file exists canceling download");
@@ -101,8 +102,12 @@ didCompleteWithError:(NSError *)error
 - (BOOL)fileExists:(NSString*)fileName{
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSURL *destinationURL = [self.docDirectoryURL URLByAppendingPathComponent:fileName];
-    [self.delegate downloadSuccess:destinationURL];
-    return [fileManager fileExistsAtPath:[destinationURL path]];
+    if([fileManager fileExistsAtPath:[destinationURL path]])
+    {
+        [self.delegate downloadSuccess:destinationURL];
+        return YES;
+    }
+    return NO;
 }
 
 @end
