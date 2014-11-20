@@ -33,7 +33,8 @@
     self.player = nil;
     self.nowPlaying = nil;
     NSLog(@"downloading file list");
-    self.download = [[GDriveDownload alloc] initWithDownloadID:@"0BwpVZ-NgHEeRV1AwcUd0RTB0M0E" delegate:self];
+    NSString* link = @"https://drive.google.com/uc?export=download&confirm=no_antivirus&id=0BwpVZ-NgHEeRV1AwcUd0RTB0M0E";
+    self.download = [[GDriveDownload alloc] initWithLink:link delegate:self];
     [self.download forceDownload];
 }
 
@@ -62,9 +63,9 @@
     }
     if (self.idxDownloading < self.fileList.count)
     {
-        NSString* fileName = [self.fileList objectAtIndex:self.idxDownloading];
-        NSLog(@"downloading %@", fileName);
-        self.download = [[GDriveDownload alloc] initWithDownloadID:fileName delegate:self];
+        NSString* link = [self.fileList objectAtIndex:self.idxDownloading];
+        NSLog(@"downloading %@", link);
+        self.download = [[GDriveDownload alloc] initWithLink:link delegate:self];
         [self.download startDownload];
     }
     [self performSelectorOnMainThread:@selector(reloadTable) withObject:nil waitUntilDone:NO];

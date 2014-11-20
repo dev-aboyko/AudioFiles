@@ -11,7 +11,7 @@
 
 @interface GDriveDownload ()
 
-@property (nonatomic, strong) NSString* downloadID;
+@property (nonatomic, strong) NSString* link;
 @property (nonatomic, weak) id<GDriveDownloadDelegate> delegate;
 @property (nonatomic, strong) NSURL* docDirectoryURL;
 @property (nonatomic, strong) NSURLSession* session;
@@ -22,11 +22,11 @@
 
 @implementation GDriveDownload
 
-- (id)initWithDownloadID:(NSString*)downloadID delegate:(id<GDriveDownloadDelegate>)delegate{
+- (id)initWithLink:(NSString*)link delegate:(id<GDriveDownloadDelegate>)delegate{
     self = [super init];
     if (self != nil)
     {
-        self.downloadID = downloadID;
+        self.link = link;
         self.delegate = delegate;
         NSArray *URLs = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
         self.docDirectoryURL = [URLs objectAtIndex:0];
@@ -37,8 +37,7 @@
 
 - (void)startDownload
 {
-    NSString* string = [NSString stringWithFormat:@"https://drive.google.com/uc?export=download&confirm=no_antivirus&id=%@", self.downloadID];
-    NSURL* URL = [NSURL URLWithString:string];
+    NSURL* URL = [NSURL URLWithString:self.link];
     NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
     sessionConfiguration.HTTPMaximumConnectionsPerHost = 1;
     self.session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:self delegateQueue:nil];

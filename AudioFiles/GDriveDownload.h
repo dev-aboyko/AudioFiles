@@ -19,7 +19,7 @@
 
 @interface GDriveDownload : NSObject <NSURLSessionDelegate>
 
-- (id)initWithDownloadID:(NSString*)downloadID delegate:(id<GDriveDownloadDelegate>)delegate;
+- (id)initWithLink:(NSString*)link delegate:(id<GDriveDownloadDelegate>)delegate;
 - (void)startDownload;
 - (void)forceDownload;
 
