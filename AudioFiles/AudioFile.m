@@ -28,22 +28,14 @@
 - (void)getMetadata
 {
     AVAsset* asset = [AVURLAsset URLAssetWithURL:self.location options:nil];
-    NSArray* metadata = [asset commonMetadata];
-    NSLog(@"metadata %@", metadata);
     for (NSString *format in asset.availableMetadataFormats)
     {
         for (AVMetadataItem *item in [asset metadataForFormat:format])
         {
             if ([[item commonKey] isEqualToString:@"title"])
-            {
                 self.title = (NSString *)[item value];
-                NSLog(@" title : %@", self.title);
-            }
             if ([[item commonKey] isEqualToString:@"artist"])
-            {
                 self.artist = (NSString *)[item value];
-                NSLog(@"artist: %@", self.artist);
-            }
         }
     }
 }
