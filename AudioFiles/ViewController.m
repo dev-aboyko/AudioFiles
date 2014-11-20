@@ -56,8 +56,7 @@
     }
     else
     {
-        NSString* fileName = [self.fileList objectAtIndex:self.idxDownloading];
-        AudioFile* audioFile = [[AudioFile alloc]initWithName:fileName Location:location];
+        AudioFile* audioFile = [[AudioFile alloc]initWithLocation:location];
         [self.fileList replaceObjectAtIndex:self.idxDownloading withObject:audioFile];
         ++self.idxDownloading;
     }
@@ -85,14 +84,17 @@
 
 - (void)play:(AudioFile*)audioFile
 {
-    NSError *error;
-    if (self.player != nil || audioFile == self.nowPlaying)
+    BOOL wasPlaying = [audioFile isEqual:self.nowPlaying];
+    if (self.player != nil)
     {
         [self.player stop];
         self.player = nil;
+        self.nowPlaying = nil;
     }
-    else
+    if (!wasPlaying)
     {
+        NSError *error;
+        self.nowPlaying = audioFile;
         self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFile.location error:&error];
         [self.player prepareToPlay];
         [self.player play];

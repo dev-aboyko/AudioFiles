@@ -12,7 +12,7 @@
 
 @implementation AudioFile
 
-- (id)initWithName:(NSString *)name Location:(NSURL *)location
+- (id)initWithLocation:(NSURL *)location
 {
     self = [super init];
     if (self != nil)

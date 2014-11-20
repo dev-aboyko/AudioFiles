@@ -14,6 +14,6 @@
 @property NSString* title;
 @property NSString* artist;
 
-- (id)initWithName:(NSString*)name Location:(NSURL*)location;
+- (id)initWithLocation:(NSURL*)location;
 
 @end
