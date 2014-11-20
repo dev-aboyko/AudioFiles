@@ -46,7 +46,6 @@
 
 - (void)downloadSuccess:(NSURL*)location
 {
-    NSLog(@"download success");
     if (self.fileList == nil)
     {
         NSString* links = [NSString stringWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
