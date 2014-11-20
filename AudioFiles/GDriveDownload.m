@@ -34,7 +34,7 @@
 }
 
 - (void)startDownload{
-    if (![self fileExists])
+//    if (![self fileExists])
         [self forceDownload];
 }
         
@@ -49,10 +49,11 @@
 }
 
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
+    
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
-    NSURL *destinationURL = [self.docDirectoryURL URLByAppendingPathComponent:self.downloadID];
+    NSURL *destinationURL = [self.docDirectoryURL URLByAppendingPathComponent:[[downloadTask response] suggestedFilename]];
     
     if ([fileManager fileExistsAtPath:[destinationURL path]])
         [fileManager removeItemAtURL:destinationURL error:nil];
