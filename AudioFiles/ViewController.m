@@ -48,20 +48,32 @@
 - (void)downloadSuccess:(NSURL*)location
 {
     if (self.fileList == nil)
+    {
         [self readFileListFromLocation:location];
+        [self performSelectorOnMainThread:@selector(reloadTable) withObject:nil waitUntilDone:NO];
+    }
     else
     {
         [self addAudioFileAtLocation:location];
         [self updateTracksTXT];
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:self.idxDownloading inSection:0];
+        [self performSelectorOnMainThread:@selector(reloadTableRow:) withObject:indexPath waitUntilDone:NO];
         ++self.idxDownloading;
     }
     [self downloadNextFile];
-    [self performSelectorOnMainThread:@selector(reloadTable) withObject:nil waitUntilDone:NO];
 }
 
 - (void)reloadTable
 {
     [self.tableView reloadData];
+}
+
+- (void)reloadTableRow:(NSIndexPath*)indexPath
+{
+    NSLog(@"reloading row %@", indexPath);
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    [self.tableView endUpdates];
 }
 
 - (void)downloadError:(GDriveDownload*)download
