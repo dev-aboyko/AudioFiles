@@ -60,7 +60,6 @@
     if (self.checkFileExists)
     {
         NSString* fileName = [[downloadTask response] suggestedFilename];
-        NSLog(@"file name %@", fileName);
         if ([self fileExists:fileName])
         {
             NSLog(@"file exists canceling download");

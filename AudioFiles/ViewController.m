@@ -112,7 +112,6 @@
 {
     NSArray* URLs = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     NSURL* docDirectoryURL = [URLs objectAtIndex:0];
-    NSLog(@"documents at %@", docDirectoryURL);
     for(self.idxDownloading = 0; self.idxDownloading != self.fileList.count; ++self.idxDownloading)
     {
         id obj = self.fileList[self.idxDownloading];
@@ -123,7 +122,6 @@
             {
                 NSLog(@"using local %@", link);
                 NSURL* location = [docDirectoryURL URLByAppendingPathComponent:[link lastPathComponent]];
-                NSLog(@"%@", location);
                 [self addAudioFileAtLocation:location];
             }
         }
@@ -157,7 +155,6 @@
             [list appendString:@"\n"];
         }
     }
-    NSLog(@"%@", list);
     [list writeToURL:[self locationTracksTXT] atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
