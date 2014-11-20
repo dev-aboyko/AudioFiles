@@ -95,7 +95,7 @@
               task:(NSURLSessionTask *)task
 didCompleteWithError:(NSError *)error
 {
-    if (error != nil && error.code == NSURLErrorCancelled)
+    if (error != nil && error.code != NSURLErrorCancelled)
         [self.delegate downloadError:self];
 }
 
