@@ -70,7 +70,6 @@
 
 - (void)reloadTableRow:(NSIndexPath*)indexPath
 {
-    NSLog(@"reloading row %@", indexPath);
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
     [self.tableView endUpdates];
